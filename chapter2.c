@@ -30,6 +30,7 @@ int tadd_ok(int x, int y){
 	return !negative_overflow && !positive_overflow;
 }
 
+//2.74
 int tsub_ok(int x, int y){
 	return y==INT32_MIN && x>=0 || tadd_ok(x, -y);
 }
@@ -136,6 +137,14 @@ int int_size_is_32(){
 	return (x<<15) > 0 && (x << 31) < 0;
 }
 
+//2.69
+unsigned rotate_right(unsigned x, int n){
+	int m = 1, i = n;
+	while(i-- > 0)
+		m = (m << 1) | 1;
+	m = ((m & x) << (32 - n)) | (x >> n);
+}
+
 int main(){
 	//short sx = -12345;
 	//unsigned uy = sx;
@@ -160,7 +169,7 @@ int main(){
 	printf("%d\n", int_size_is_32());
 	show_int(srl(2, 1));
 	show_int(srl(0x80000000, 1));
-	show_int(leftmost_one(0x40000000));
+	show_int(rotate_right(0x12345678, 20));
 	return 0;
 }
 
