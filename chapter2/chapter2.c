@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+#include <math.h>
+#include <float.h>
 
 typedef unsigned char *byte_pointer;
 
@@ -145,31 +147,27 @@ unsigned rotate_right(unsigned x, int n){
 	m = ((m & x) << (32 - n)) | (x >> n);
 }
 
+//2.91
+float float_absval(float f){
+	if (isnan(f))
+		return f;
+	return f < 0 ? -f : f;
+}
+
+//2.93
+//"float float_half(float f){
+//"	unsigned 
+//"}
+
 int main(){
-	//short sx = -12345;
-	//unsigned uy = sx;
-	//printf("uy = %u:\t", uy);
-	//show_bytes((byte_pointer)&uy, sizeof(unsigned));
-	//printf("INT32_MIN=%d\t-INT32_MIN=%d\n", INT32_MIN, -INT32_MIN);
-	//printf("INT32_MAX=%d\t-INT32_MAX=%d\n", INT32_MAX, -INT32_MAX);
-	short x1 = 0x1;
-	short x2 = 0x6;
-	short r = x1 * x2;
-	int x = 3;
-	int y = -4;
-	unsigned ux = x;
-	unsigned uy = y;
-	//show_bytes((byte_pointer)&r, sizeof(unsigned short));
-	int a = 0xFFFF;
-	//printf("%d\n", a);
-	printf("%d\n", (x*~y+ux*uy) == -x);	
-	show_int(a<<16);
-	printf("%d\n", (a<<16)-a);
-	printf("%d\n", a*a);
-	printf("%d\n", int_size_is_32());
-	show_int(srl(2, 1));
-	show_int(srl(0x80000000, 1));
-	show_int(rotate_right(0x12345678, 20));
+	float a = 0.0;
+	float b = -0.0;
+	show_float(a);
+	show_float(b);
+	float c = 0.9;
+	show_float(c);
+//	printf("%f\n", (float)((unsigned)c >> 1));
+	show_int((unsigned)c);
 	return 0;
 }
 
