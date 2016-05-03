@@ -132,10 +132,87 @@ compare:
 	.cfi_endproc
 .LFE29:
 	.size	compare, .-compare
+	.globl	arithDivide
+	.type	arithDivide, @function
+arithDivide:
+.LFB30:
+	.cfi_startproc
+	leal	3(%rdi), %eax
+	testl	%edi, %edi
+	cmovns	%edi, %eax
+	sarl	$2, %eax
+	ret
+	.cfi_endproc
+.LFE30:
+	.size	arithDivide, .-arithDivide
+	.globl	test1
+	.type	test1, @function
+test1:
+.LFB31:
+	.cfi_startproc
+	testl	%esi, %esi
+	jle	.L19
+	movl	%edi, %edx
+	subl	%esi, %edx
+	movl	%edi, %eax
+	xorl	%esi, %eax
+	cmpl	%esi, %edi
+	cmovl	%edx, %eax
+	ret
+.L19:
+	leal	(%rdi,%rsi), %eax
+	sall	$2, %edi
+	cmpl	$-2, %esi
+	cmovl	%edi, %eax
+	ret
+	.cfi_endproc
+.LFE31:
+	.size	test1, .-test1
+	.globl	switch_eg
+	.type	switch_eg, @function
+switch_eg:
+.LFB32:
+	.cfi_startproc
+	subl	$100, %esi
+	cmpl	$6, %esi
+	ja	.L30
+	movl	%esi, %esi
+	jmp	*.L26(,%rsi,8)
+	.section	.rodata
+	.align 8
+	.align 4
+.L26:
+	.quad	.L25
+	.quad	.L30
+	.quad	.L27
+	.quad	.L28
+	.quad	.L29
+	.quad	.L30
+	.quad	.L29
+	.text
+.L25:
+	leal	(%rdi,%rdi,2), %eax
+	leal	(%rdi,%rax,4), %eax
+	ret
+.L27:
+	addl	$10, %edi
+.L28:
+	leal	11(%rdi), %eax
+	ret
+.L29:
+	movl	%edi, %eax
+	imull	%edi, %eax
+	ret
+.L30:
+	movl	$0, %eax
+	ret
+	.cfi_endproc
+.LFE32:
+	.size	switch_eg, .-switch_eg
 	.globl	main
 	.type	main, @function
 main:
-.LFB30:
+.LFB33:
 	.cfi_startproc
 	subq	$8, %rsp
 	.cfi_def_cfa_offset 16
@@ -146,7 +223,7 @@ main:
 	.cfi_def_cfa_offset 8
 	ret
 	.cfi_endproc
-.LFE30:
+.LFE33:
 	.size	main, .-main
 	.ident	"GCC: (Ubuntu 5.3.1-14ubuntu2) 5.3.1 20160413"
 	.section	.note.GNU-stack,"",@progbits

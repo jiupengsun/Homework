@@ -40,6 +40,46 @@ void compare(unsigned x, unsigned y, unsigned *c){
 		*c = y;
 }
 
+//exercise 3.26
+int arithDivide(int x){
+	return x / 4;
+}
+
+//exercise 3.27
+int test1(int x, int y){
+	int val = x+y;
+	if(y > 0){
+		if(x<y)	
+			val = x-y;
+		else
+			val = x^y;
+	} else if(y<-2)
+		val = 4*x;
+	return val;
+}
+
+//picture 3-18
+int switch_eg(int x, int n){
+	int result = x;
+	switch(n){
+		case 100:
+			result *= 13;
+			break;
+		case 102:
+			result += 10;
+		case 103:
+			result += 11;
+			break;
+		case 104:
+		case 106:
+			result *= result;
+			break;
+		default:
+			result = 0;
+	}
+	return result;
+}
+
 int main(){
 	unsigned char c = 0x80;
 	unsigned i = (unsigned)c;
