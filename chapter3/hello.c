@@ -80,8 +80,12 @@ int switch_eg(int x, int n){
 	return result;
 }
 
+void change(int *x){
+	*x -= 1;
+}
+
 int main(){
-	unsigned char c = 0x80;
-	unsigned i = (unsigned)c;
-	show_int(i);
+	int x = 1;
+	change(&x);
+	printf("%d\n", x);
 }
