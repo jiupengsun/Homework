@@ -1,8 +1,7 @@
-*.class
 *.log
 run.bat
 run.sh
 *.java~
 *.swp
 *.swo
-*/classes/*
+.gitignore
