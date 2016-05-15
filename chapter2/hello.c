@@ -2,20 +2,24 @@
 #include <stdlib.h>
 #include "byte.h"
 
-unsigned float_twice(unsigned uf) {
-	// Get the Exp
-	unsigned E = (uf & 0x7f800000) >> 23;
-	// Infinite or NaN
-	if(E == 0xff)
-		return uf;
-	if(E == 0 && (uf & 0x00400000) == 0){
-		return (uf & 0xff800000) | (uf & 0x004fffff << 1);
-	}
-	return ((++E) << 23) | (uf & 0x807fffff);
+typedef struct{
+	int a[2];
+	double d;
+} struct_t;
+
+double fun(int i){
+	volatile struct_t s;
+	s.d = 3.14;
+	s.a[i] = 1073741824;
+	return s.d;
 }
 
 int main(int argc, char* argv[]){
-	int x = 0x1;
-	show_int(float_twice(x));
+	printf("%lf\n", fun(0));
+	printf("%lf\n", fun(1));
+	printf("%lf\n", fun(2));
+	printf("%lf\n", fun(3));
+	printf("%lf\n", fun(4));
+	printf("%lf\n", fun(6));
 	return 0;
 }
