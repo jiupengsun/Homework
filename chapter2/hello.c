@@ -5,37 +5,41 @@
 
 
 unsigned float_i2f(int x) {
-	int sign = 0;
-	int E = 0;
-	int frac = 0;
-	unsigned ux;
-	int hb = 31;
-	sign = (x >> 31) & 0x1;
-	if(sign)
-		x = -x;
-	ux = x;
-	while(!(ux >> hb) && hb)
-		--hb;// get the highest significant bit
-	if(hb > 23){// need rounding
-		int monitor = 1 << (hb - 24);
-		int guard = monitor << 1;
-		int round = (guard - 1) & ux;
-		if((round > monitor) || ((round==monitor) && (guard & ux))){
-			ux += guard;
-			if((1<<hb) & ux)
-				++hb;// carry bit
+	int sign;
+	unsigned u;
+	unsigned ux = x;
+	int hb = 0;
+	int diff;
+	if(x){
+		sign = x & 0x80000000;
+		if(sign)
+			ux = -x;
+		// get the highest significant bit
+		u = ux;
+		while(u){
+			u >>= 1;
+			++hb;
 		}
-		ux >>= hb - 23;
-	} else
-		ux <<= 23 - hb;
-	frac = ux & 0x7fffff;
-	if(x)
-		E = hb + 127;
-	return (sign << 31) | (E << 23) | frac;
+		diff = hb - 23;
+		if(diff > 0){// need rounding
+			int guard = 1 << diff;
+			int monitor = guard >> 1;
+			int round = (guard - 1) & ux;
+			if((round > monitor) || ((round==monitor) && (guard & ux))){
+				ux += guard;
+				if(!((1<<hb) & ux))
+					++hb;// carry bit
+			}
+			ux >>= diff;
+		} else
+			ux <<= -diff;
+		return sign | ((hb + 127) << 23) | (ux & 0x7fffff);
+	}
+	return 0;
 }
 
 int main(int argc, char* argv[]){
-	int x = 0x80000001;
+	int x = 0x80000000;
 	show_int(float_i2f(x));
 	return 0;
 }
