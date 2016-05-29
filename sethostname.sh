@@ -1,0 +1,1 @@
+sudo ./setHostName $1
